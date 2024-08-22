@@ -1,0 +1,7 @@
+main-prefix: '&a[&bSurvival&a] '
+
+error-prefix: '&4[&cSurvival&4] '
+
+no-permission: '&4[&cSurvival&4] No permission for the command.'
+
+console-no-permission: '&4[&cSurvival&4] Console can not execute the command.'

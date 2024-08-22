@@ -1,0 +1,36 @@
+# Placeholders: of chat formatter
+# {message} - the chat message
+# {name} - the player's name
+# {displayname} - the player's display name / nickname
+# {world} - the world name of the player's current world
+# {prefix} - the player's highest priority prefix
+# {suffix} - the player's highest priority suffix
+# {prefixes} - the player's prefixes sorted by the highest priority
+# {suffixes} - the player's suffixes sorted by the highest priority
+# {username-color} - the player's or the group's username color
+# {message-color} - the player's or the group's message color
+
+chat-format: "{prefix}{name}&r: {message}"
+
+hub:
+  world: world
+  x: 0.0
+  y: 64.0
+  z: 0.0
+  yaw: 0.0
+  pitch: 0.0
+spawns:
+  world:
+    world: world
+    x: 0.0
+    y: 64.0
+    z: 0.0
+    yaw: 0.0
+    pitch: 0.0
+
+broadcast:
+  interval: 300 # interval in seconds
+  messages:
+    - "&6Welcome to the server! Have fun and be respectful."
+    - "&aDon't forget to check out our website for the latest news!"
+    - "&bJoin our Discord server to chat with other players!"

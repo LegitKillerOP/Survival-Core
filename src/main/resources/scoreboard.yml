@@ -1,0 +1,26 @@
+scoreboard:
+  title: "&b&lSURVIVAL"
+  lines:
+    - "&a%player_name%!"
+    - "&fONLINE: %server_online%"
+    - "&fRANK: %luckperms_prefix%"
+    - '&r ' # Unique blank line 1
+    - '&fLOBBY: &a#2'
+    - '&f ' # Unique blank line 2
+    - '&fPVP:'
+    - '&fSKYBLOCK:'
+    - '&fLIFESTEAL:'
+    - '&7 ' # Unique blank line 3
+    - "&7&lMC.GODSPUNKY.IN"
+tab:
+  header:
+    - ""
+    - "&e⋆ &b&lGodSpunky &f&lNetwork &e⋆"
+    - ""
+    - "&e❂              &8&m-+--------------------------------------------+-&e              ❂"
+  footer:
+    - "&e❂              &8&m-+--------------------------------------------+-&e              ❂"
+    - ""
+    - " &cStore: &fstore.godspunky.in               &bTwitter: &f@TheGodSpunkyNetwork"
+    - " &6◂ &eplay.godspunky.in  &6▸"
+    - ""

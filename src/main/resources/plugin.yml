@@ -1,0 +1,67 @@
+name: Survival
+version: '${project.version}'
+main: me.legit.survival.Survival
+api-version: 1.20
+authors: [ Legit ]
+description: Survival core
+depend: [Vault,PlaceholderAPI]
+commands:
+  reloadconfigs:
+    description: Reload all custom configuration files
+    usage: /reloadconfigs
+    permission: rank.admin
+  broadcast:
+    description: Broadcast in world
+    usage: /broadcast <message>
+    aliases:
+      - alert
+    permission: rank.admin
+  clearchat:
+    description: Clear chat of all player
+    usage: /clearchat
+    permission: rank.admin
+  fly:
+    description: Enable or disable fly in server
+    usage: /fly
+    permission: rank.admin
+  setlobby:
+    description: Set lobby
+    usage: /setlobby
+    permission: rank.admin
+  spawn:
+    description: Teleport to spawn
+    usage: /spawn
+    permission: rank.default
+  msg:
+    description: Message to player
+    usage: /msg <player> <msg>
+    permission: rank.default
+  balance:
+    description: Check your balance
+    usage: /bal
+    aliases:
+      - balance
+      - purse
+    permission: rank.default
+  pay:
+    description: Send money to another player
+    usage: /pay <player> <amount>
+    permission: rank.default
+  addmoney:
+    description: Add money to a player or all players
+    usage: /addmoney <player|*> <amount>
+    permission: rank.admin
+  removemoney:
+    description: Remove money from a player or all players
+    usage: /removemoney <player|*> <amount>
+    permission: rank.admin
+  setmoney:
+    description: Set the money for a player or all players
+    usage: /setmoney <player|*> <amount>
+    permission: rank.admin
+  topmoney:
+    description: List the top 10 players with the highest money
+    usage: /topmoney
+    aliases:
+      - topbal
+    permission: rank.default
