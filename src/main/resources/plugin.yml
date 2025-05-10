@@ -65,3 +65,15 @@ commands:
     aliases:
       - topbal
     permission: rank.default
+  sethome:
+    description: Set your home location.
+    usage: /sethome
+    permission: rank.default
+  home:
+    description: Teleport to your home.
+    usage: /home
+    permission: rank.default
+  delhome:
+    description: Delete your home.
+    usage: /delhome
+    permission: rank.default

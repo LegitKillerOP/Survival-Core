@@ -11,11 +11,15 @@ import java.util.Map;
 
 public class ConfigManager {
 
-    private static Map<String, FileConfiguration> configs = new HashMap<>();
+    private static final Map<String, FileConfiguration> configs = new HashMap<>();
+    private static JavaPlugin plugin;
 
-    public static void loadAllConfigs(JavaPlugin plugin) {
-        loadConfig(plugin, "config.yml");
-        loadConfig(plugin, "scoreboard.yml");
+    public static void loadAllConfigs(JavaPlugin pluginInstance) {
+        plugin = pluginInstance;
+        loadConfig("config.yml");
+        loadConfig("scoreboard.yml");
+        loadConfig("en.yml");
+        loadConfig("homes.yml");
     }
 
     public static void saveAllConfigs() {
@@ -24,7 +28,7 @@ public class ConfigManager {
         }
     }
 
-    public static void reloadAllConfigs(JavaPlugin plugin) {
+    public static void reloadAllConfigs() {
         configs.clear();
         loadAllConfigs(plugin);
     }
@@ -33,7 +37,7 @@ public class ConfigManager {
         return configs.get(fileName);
     }
 
-    private static void loadConfig(JavaPlugin plugin, String fileName) {
+    private static void loadConfig(String fileName) {
         File configFile = new File(plugin.getDataFolder(), fileName);
         if (!configFile.exists()) {
             plugin.saveResource(fileName, false);
@@ -43,7 +47,7 @@ public class ConfigManager {
     }
 
     private static void saveConfig(String fileName, FileConfiguration config) {
-        File configFile = new File("plugins/Survival Core", fileName);
+        File configFile = new File(plugin.getDataFolder(), fileName); // ✅ Correctly inside plugin folder
         try {
             config.save(configFile);
         } catch (IOException e) {
@@ -51,19 +55,29 @@ public class ConfigManager {
         }
     }
 
-    public static String getErrorPrefix(){
-        return getConfig("en.yml").getString("error-prefix");
+    // Utility methods with null safety
+
+    public static String getErrorPrefix() {
+        FileConfiguration config = getConfig("en.yml");
+        if (config == null) return "[Error] ";
+        return config.getString("error-prefix", "[Error] ");
     }
 
-    public static String getMainPrefix(){
-        return getConfig("en.yml").getString("main-prefix");
+    public static String getMainPrefix() {
+        FileConfiguration config = getConfig("en.yml");
+        if (config == null) return "[Survival] ";
+        return config.getString("main-prefix", "[Survival] ");
     }
 
-    public static String getNoPermission(){
-        return getConfig("en.yml").getString("no-permission");
+    public static String getNoPermission() {
+        FileConfiguration config = getConfig("en.yml");
+        if (config == null) return "You do not have permission.";
+        return config.getString("no-permission", "You do not have permission.");
     }
 
-    public static String getConsoleNoPermission(){
-        return getConfig("en.yml").getString("console-no-permission");
+    public static String getConsoleNoPermission() {
+        FileConfiguration config = getConfig("en.yml");
+        if (config == null) return "Only players can execute this command.";
+        return config.getString("console-no-permission", "Only players can execute this command.");
     }
 }

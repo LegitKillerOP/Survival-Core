@@ -18,7 +18,7 @@ public class ReloadConfigsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.hasPermission("rank.admin")) {
-            ConfigManager.reloadAllConfigs(plugin);
+            ConfigManager.reloadAllConfigs();
             sender.sendMessage(Survival.getPlugin().colorize(ConfigManager.getMainPrefix() + "All configs have been reloaded!"));
         } else {
             sender.sendMessage(Survival.getPlugin().colorize(ConfigManager.getErrorPrefix() + "No permission"));

@@ -51,6 +51,10 @@ public final class Survival extends JavaPlugin implements Listener {
         this.getCommand("addmoney").setExecutor(new AddMoneyCommand());
         this.getCommand("removemoney").setExecutor(new RemoveMoneyCommand());
         this.getCommand("setmoney").setExecutor(new SetMoneyCommand());
+        this.getCommand("sethome").setExecutor(new SetHomeCommand());
+        this.getCommand("home").setExecutor(new HomeCommand());
+        this.getCommand("delhome").setExecutor(new DelHomeCommand());
+
 
         pm.registerEvents(new AntiSwearListener(this),this);
         pm.registerEvents(new ChatListener(this, luckPerms), this);
