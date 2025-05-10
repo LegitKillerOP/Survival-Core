@@ -20,6 +20,7 @@ public class ConfigManager {
         loadConfig("scoreboard.yml");
         loadConfig("en.yml");
         loadConfig("homes.yml");
+        loadConfig("warps.yml");
     }
 
     public static void saveAllConfigs() {

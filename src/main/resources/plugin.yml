@@ -77,3 +77,12 @@ commands:
     description: Delete your home.
     usage: /delhome
     permission: rank.default
+  setwarp:
+    description: Set a warp.
+    usage: /setwarp <name>
+  warp:
+    description: Teleport to a warp.
+    usage: /warp <name>
+  delwarp:
+    description: Delete a warp.
+    usage: /delwarp <name>
