@@ -1,26 +1,45 @@
 package me.legit.survival.Gui;
 
+import me.legit.survival.Utils.ConfigManager;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class BankManager {
 
+    private static FileConfiguration bankConfig;
+    private static final String BANK_FILE = "bank.yml";
+    private static Economy economy;
+
+    public static void setup(Economy eco) {
+        economy = eco;
+        bankConfig = ConfigManager.getConfig(BANK_FILE);
+        if (bankConfig == null) {
+            // if bank.yml doesn't exist, create it
+            ConfigManager.loadAllConfigs(me.legit.survival.Survival.getPlugin());
+            bankConfig = ConfigManager.getConfig(BANK_FILE);
+        }
+    }
+
     public static void createBankGUI() {
         GUIManager.createGUI("Bank", 9, "&aBank", (player, event) -> handleBankClick(player, event));
 
-        // Add some items to the GUI
-        ItemStack depositItem = createItem(Material.CHEST, "&6Deposit", "&7Click to deposit money");
-        ItemStack withdrawItem = createItem(Material.DISPENSER, "&6Withdraw", "&7Click to withdraw money");
+        ItemStack depositItem = createItem(Material.CHEST, "&6Deposit", "&7Click to deposit $100");
+        ItemStack withdrawItem = createItem(Material.DISPENSER, "&6Withdraw", "&7Click to withdraw $100");
+        ItemStack balanceItem = createItem(Material.PAPER, "&bCheck Balance", "&7See your bank account balance");
 
-        GUIManager.addItemToGUI("Bank", 3, depositItem);
-        GUIManager.addItemToGUI("Bank", 5, withdrawItem);
+        GUIManager.addItemToGUI("Bank", 2, depositItem);
+        GUIManager.addItemToGUI("Bank", 4, balanceItem);
+        GUIManager.addItemToGUI("Bank", 6, withdrawItem);
     }
 
     public static void openBankGUI(Player player) {
@@ -31,13 +50,30 @@ public class BankManager {
         ItemStack clickedItem = event.getCurrentItem();
         if (clickedItem == null || !clickedItem.hasItemMeta()) return;
 
-        String itemName = clickedItem.getItemMeta().getDisplayName();
-        if (itemName.equalsIgnoreCase(ChatColor.GREEN + "Deposit")) {
-            // Handle deposit logic
-            player.sendMessage(ChatColor.GREEN + "You clicked to deposit money!");
-        } else if (itemName.equalsIgnoreCase(ChatColor.RED + "Withdraw")) {
-            // Handle withdraw logic
-            player.sendMessage(ChatColor.RED + "You clicked to withdraw money!");
+        String itemName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
+        UUID uuid = player.getUniqueId();
+
+        if (itemName.equalsIgnoreCase("Deposit")) {
+            if (economy.getBalance(player) >= 100) {
+                economy.withdrawPlayer(player, 100);
+                double currentBank = getBankBalance(uuid);
+                setBankBalance(uuid, currentBank + 100);
+                player.sendMessage(ConfigManager.getMainPrefix() + ChatColor.GREEN + "Deposited $100 to your bank account!");
+            } else {
+                player.sendMessage(ConfigManager.getErrorPrefix() + ChatColor.RED + "You don't have enough money to deposit!");
+            }
+        } else if (itemName.equalsIgnoreCase("Withdraw")) {
+            double currentBank = getBankBalance(uuid);
+            if (currentBank >= 100) {
+                setBankBalance(uuid, currentBank - 100);
+                economy.depositPlayer(player, 100);
+                player.sendMessage(ConfigManager.getMainPrefix() + ChatColor.GREEN + "Withdrew $100 from your bank account!");
+            } else {
+                player.sendMessage(ConfigManager.getErrorPrefix() + ChatColor.RED + "You don't have enough bank balance to withdraw!");
+            }
+        } else if (itemName.equalsIgnoreCase("Check Balance")) {
+            double bankBalance = getBankBalance(uuid);
+            player.sendMessage(ConfigManager.getMainPrefix() + ChatColor.AQUA + "Your bank account balance: $" + String.format("%.2f", bankBalance));
         }
     }
 
@@ -45,13 +81,19 @@ public class BankManager {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-
-        // Translate color codes for each line of lore
         meta.setLore(Arrays.stream(lore)
                 .map(line -> ChatColor.translateAlternateColorCodes('&', line))
                 .collect(Collectors.toList()));
-
         item.setItemMeta(meta);
         return item;
+    }
+
+    private static double getBankBalance(UUID uuid) {
+        return bankConfig.getDouble("bank." + uuid.toString(), 0.0);
+    }
+
+    private static void setBankBalance(UUID uuid, double amount) {
+        bankConfig.set("bank." + uuid.toString(), amount);
+        ConfigManager.saveAllConfigs();
     }
 }

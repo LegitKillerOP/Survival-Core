@@ -80,12 +80,20 @@ commands:
   setwarp:
     description: Set a warp.
     usage: /setwarp <name>
+    permission: rank.default
   warp:
     description: Teleport to a warp.
     usage: /warp <name>
+    permission: rank.default
   delwarp:
     description: Delete a warp.
     usage: /delwarp <name>
+    permission: rank.default
   warps:
     description: Opens a GUI showing all warps.
     usage: /warps
+    permission: rank.default
+  bank:
+    description: Open your personal bank.
+    usage: /bank
+    permission: rank.default

@@ -1,6 +1,8 @@
 package me.legit.survival.Commands;
 
 import me.legit.survival.Gui.GUIManager;
+import me.legit.survival.Survival;
+import me.legit.survival.Utils.ConfigManager;
 import me.legit.survival.Utils.WarpManager;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,7 +19,7 @@ public class WarpsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§cOnly players can open the warp menu.");
+            sender.sendMessage(ConfigManager.getConsoleNoPermission());
             return true;
         }
         Player player = (Player) sender;
@@ -45,11 +47,11 @@ public class WarpsCommand implements CommandExecutor {
 
         String warpName = event.getCurrentItem().getItemMeta().getDisplayName().replace("§b", "");
         if (WarpManager.getWarp(warpName) == null) {
-            player.sendMessage("§cWarp not found: §e" + warpName);
+            player.sendMessage(Survival.getPlugin().colorize(ConfigManager.getErrorPrefix() + "§cWarp not found: §e" + warpName));
             return;
         }
         player.closeInventory();
         player.teleport(WarpManager.getWarp(warpName));
-        player.sendMessage("§aTeleported to §e" + warpName + "§a!");
+        player.sendMessage(Survival.getPlugin().colorize(ConfigManager.getMainPrefix() + "§aTeleported to §e" + warpName + "§a!"));
     }
 }

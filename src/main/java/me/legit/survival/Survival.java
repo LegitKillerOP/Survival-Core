@@ -1,6 +1,7 @@
 package me.legit.survival;
 
 import me.legit.survival.Commands.*;
+import me.legit.survival.Gui.BankManager;
 import me.legit.survival.Gui.GUIManager;
 import me.legit.survival.Listeners.AntiSwearListener;
 import me.legit.survival.Listeners.ChatListener;
@@ -35,9 +36,14 @@ public final class Survival extends JavaPlugin implements Listener {
         ConfigManager.loadAllConfigs(this);
 
         if (!CurrencyManager.setupEconomy(this)) {
-            getLogger().severe("Vault not found!");
+            getLogger().severe("Vault dependency not found! Disabling plugin...");
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        BankManager.setup(CurrencyManager.getEconomy());
+        BankManager.createBankGUI();
+
 
         this.getCommand("reloadconfigs").setExecutor(new ReloadConfigsCommand(this));
         this.getCommand("broadcast").setExecutor(new BroadcastCommand());
@@ -58,6 +64,7 @@ public final class Survival extends JavaPlugin implements Listener {
         this.getCommand("warp").setExecutor(new WarpCommand());
         this.getCommand("delwarp").setExecutor(new DelWarpCommand());
         this.getCommand("warps").setExecutor(new WarpsCommand());
+        this.getCommand("bank").setExecutor(new BankCommand());
 
 
         pm.registerEvents(new AntiSwearListener(this),this);

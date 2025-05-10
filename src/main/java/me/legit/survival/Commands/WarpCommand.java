@@ -1,5 +1,6 @@
 package me.legit.survival.Commands;
 
+import me.legit.survival.Survival;
 import me.legit.survival.Utils.ConfigManager;
 import me.legit.survival.Utils.WarpManager;
 import org.bukkit.Location;
@@ -22,17 +23,17 @@ public class WarpCommand implements CommandExecutor {
             return true;
         }
         if (args.length != 1) {
-            player.sendMessage(ConfigManager.getMainPrefix() + "§cUsage: /warp <name>");
+            player.sendMessage(Survival.getPlugin().colorize(ConfigManager.getMainPrefix() + "§cUsage: /warp <name>"));
             return true;
         }
         String warpName = args[0];
         Location warp = WarpManager.getWarp(warpName);
         if (warp == null) {
-            player.sendMessage(ConfigManager.getMainPrefix() + "§cWarp not found: §e" + warpName);
+            player.sendMessage(Survival.getPlugin().colorize(ConfigManager.getMainPrefix() + "§cWarp not found: §e" + warpName));
             return true;
         }
         player.teleport(warp);
-        player.sendMessage(ConfigManager.getMainPrefix() + "§aTeleported to warp §e" + warpName + "§a!");
+        player.sendMessage(Survival.getPlugin().colorize(ConfigManager.getMainPrefix() + "§aTeleported to warp §e" + warpName + "§a!"));
         return true;
     }
 }
