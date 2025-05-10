@@ -1,6 +1,7 @@
 package me.legit.survival;
 
 import me.legit.survival.Commands.*;
+import me.legit.survival.Gui.GUIManager;
 import me.legit.survival.Listeners.AntiSwearListener;
 import me.legit.survival.Listeners.ChatListener;
 import me.legit.survival.Utils.BroadcastTask;
@@ -10,7 +11,10 @@ import me.legit.survival.Utils.ScoreboardManager;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,8 +35,7 @@ public final class Survival extends JavaPlugin implements Listener {
         ConfigManager.loadAllConfigs(this);
 
         if (!CurrencyManager.setupEconomy(this)) {
-            getLogger().severe("Vault not found! Disabling plugin...");
-            getServer().getPluginManager().disablePlugin(this);
+            getLogger().severe("Vault not found!");
             return;
         }
 
@@ -43,12 +46,15 @@ public final class Survival extends JavaPlugin implements Listener {
         this.getCommand("setlobby").setExecutor(new SetLobbyCommand(this));
         this.getCommand("spawn").setExecutor(new SpawnCommand(this));
         this.getCommand("msg").setExecutor(new MsgCommand());
+        this.getCommand("balance").setExecutor(new BalanceCommand());
+        this.getCommand("pay").setExecutor(new PayCommand());
         this.getCommand("addmoney").setExecutor(new AddMoneyCommand());
         this.getCommand("removemoney").setExecutor(new RemoveMoneyCommand());
         this.getCommand("setmoney").setExecutor(new SetMoneyCommand());
 
         pm.registerEvents(new AntiSwearListener(this),this);
         pm.registerEvents(new ChatListener(this, luckPerms), this);
+        pm.registerEvents(this, this);
 
         new ScoreboardManager(this).initializeScoreboard();
         int interval = getConfig().getInt("broadcast.interval");
@@ -63,6 +69,16 @@ public final class Survival extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         ConfigManager.saveAllConfigs();
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        GUIManager.handleInventoryClick(event);
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        GUIManager.handleInventoryClose(event);
     }
 
     public String colorize(String message) {

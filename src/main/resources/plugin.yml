@@ -4,7 +4,7 @@ main: me.legit.survival.Survival
 api-version: 1.20
 authors: [ Legit ]
 description: Survival core
-depend: [Vault,PlaceholderAPI]
+depend: [PlaceholderAPI, Vault]
 commands:
   reloadconfigs:
     description: Reload all custom configuration files
