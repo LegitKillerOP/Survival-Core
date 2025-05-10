@@ -57,6 +57,7 @@ public final class Survival extends JavaPlugin implements Listener {
         this.getCommand("setwarp").setExecutor(new SetWarpCommand());
         this.getCommand("warp").setExecutor(new WarpCommand());
         this.getCommand("delwarp").setExecutor(new DelWarpCommand());
+        this.getCommand("warps").setExecutor(new WarpsCommand());
 
 
         pm.registerEvents(new AntiSwearListener(this),this);
